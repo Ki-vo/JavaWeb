@@ -4,6 +4,12 @@
 
 学号：202130441993
 
+部署地址：http://8.134.116.81:5173
+
+测试账号：root
+
+测试口令：1234
+
 ## 前端工程
 
 vue-project					根目录
@@ -38,7 +44,7 @@ vue-project					根目录
 
 ​				|--- DeregisterConfirm.vue	注销验证界面
 
-​				|--- PageContainer.vue	
+​				|--- PageContainer.vue	页面包裹容器
 
 ​				|--- ProductEdit.vue		商品编辑界面
 
@@ -55,3 +61,67 @@ vue-project					根目录
 ​		|--- App.vue
 
 ​		|--- main.js
+
+
+
+## 后端工程
+
+springboot
+
+​	|--- src.main.java.com.project	源代码根目录
+
+​		|--- config
+
+​			|--- WebConfig.java	
+
+​		|--- controller
+
+​			|--- DeregisterController.java	注销功能
+
+​			|--- LoginController.java	登录功能
+
+​			|--- ProductController.java	商品管理功能
+
+​			|--- RegisterController.java	注册功能
+
+​			|--- UserController.java	用户管理功能
+
+​		|--- exception
+
+​			|--- GlobalExceptionHandler.java	报错统一管理
+
+​		|--- interceptor
+
+​			|--- LoginCheckInterceptor.java	登录校验拦截器
+
+​		|--- mapper
+
+​			|--- ProductMapper.java	商品Mapper接口
+
+​			|--- UserMapper.java	用户Mapper接口
+
+​		|--- pojo
+
+​			|--- User.java	用户实体类
+
+​			|--- Product.java	商品实体类
+
+​			|--- Result.java	返回结果实体类
+
+​		|--- service
+
+​			|--- impl	Service接口实现类
+
+​				|--- ProductServiceImpl.java
+
+​				|--- UserServiceImpl.java
+
+​			|--- ProductService.java	商品Service接口
+
+​			|--- UserService.java	用户Service接口
+
+​		|--- utils
+
+​			|---JWTUtils.java	JWT令牌生成工具
+
+​		|--- SpringbootApplication.java	启动后端服务
