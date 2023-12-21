@@ -1,21 +1,9 @@
-<template>
-  <div>
-    <router-view></router-view>
-  </div>
-</template>
+<script setup>
 
-<script>
-
-export default {
-  components: {},
-  data() {
-    return {
-      message: "Hello"
-    }
-  },
-  methods: {}
-}
 </script>
+<template>
+  <router-view></router-view>
+</template>
 
 <style>
 

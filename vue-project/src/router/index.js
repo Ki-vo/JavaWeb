@@ -1,41 +1,24 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import {createRouter, createWebHistory} from "vue-router";
 
-Vue.use(VueRouter)
+import LoginView from "@/views/LoginView.vue";
+import TestView from "@/views/HomeView.vue";
+import CartView from "@/views/CartView.vue";
+import HomeView from "@/views/TestView.vue";
+import DetailView from "@/views/DetailView.vue";
+import SellerView from "@/views/SellerView.vue"
 
 const routes = [
-    {
-        path: '/home',
-        name: 'home',
-        component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
-    },
-    {
-        path: '/about',
-        name: 'about',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-    },
-    {
-        path: '/',
-        name: 'homepage',
-        component: () => import(/* webpackChunkName: "about" */ '../views/element/HomepageView.vue')
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: () => import(/* webpackChunkName: "about" */ '../views/element/LoginView.vue')
-    },
-    {
-        path: '/test',
-        name: 'test',
-        component: () => import(/* webpackChunkName: "about" */ '../views/element/ElementView.vue')
-    }
+    {path: '/login', component: LoginView},
+    {path: '/', component: TestView},
+    {path: '/cart', component: CartView},
+    {path: '/test', component: HomeView},
+    {path: '/detail', component: DetailView},
+    {path: '/sell', component: SellerView}
 ]
 
-const router = new VueRouter({
-    routes
-})
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: routes
+});
 
 export default router
