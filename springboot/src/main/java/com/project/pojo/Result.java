@@ -18,7 +18,7 @@ public class Result {
     }
 
     public static Result success() {
-        return new Result(1, "sucess", null);
+        return new Result(1, "success", null);
     }
 
     public static Result error(String msg) {

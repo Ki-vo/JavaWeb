@@ -31,10 +31,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getEmailByUsername(String username) {
+        try {
+            return userMapper.getEmailByUsername(username);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateUser(User user) {
+        try {
+            userMapper.updateUser(user);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void deregister(User user) {
         try {
             userMapper.delUser(user);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

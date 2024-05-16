@@ -4,15 +4,9 @@ import com.project.mapper.ProductMapper;
 import com.project.pojo.Product;
 import com.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -22,42 +16,17 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
-    public Product getAddr(Product product) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String timestamp = dateFormat.format(new Date());
-        String filename = timestamp + ".png";
-
-        MultipartFile coverImg = product.getCoverImg();
-        MultipartFile detailImg = product.getDetailImg();
-
-        try {
-            String path = System.getProperty("user.dir") + "\\cover_image\\";
-            File targetFile = new File(path + filename);
-            coverImg.transferTo(targetFile);
-            System.out.println("保存成功" + path + filename);
-            product.setCoverImgAddr(path + filename);
-        } catch (IOException e) {
-            System.out.println("保存失败" + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-        try {
-            String path = System.getProperty("user.dir") + "\\detail_image\\";
-            File targetFile = new File(path + filename);
-            detailImg.transferTo(targetFile);
-            System.out.println("保存成功" + path + filename);
-            product.setDetailImgAddr(path + filename);
-        } catch (IOException e) {
-            System.out.println("保存失败" + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-        return product;
+    public void addProduct(Product product) {
+        productMapper.addProduct(product);
     }
 
     @Override
-    public void addProduct(Product product) {
-        productMapper.addProduct(product);
+    public void updateProduct(Product product) {
+        try {
+            productMapper.updateProduct(product);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -70,8 +39,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProductByType(Integer type) {
+        try {
+            return productMapper.getListByType(type);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Product> getHotProduct() {
+        try {
+            return productMapper.getHotProduct();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Product getById(Integer id) {
-        return productMapper.getById(id);
+        try {
+            return productMapper.getById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getImgAddrById(Integer id) {
+        return productMapper.getCoverImgAddr(id);
     }
 
     @Override

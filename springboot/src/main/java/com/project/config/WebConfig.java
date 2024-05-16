@@ -18,6 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register")
-                .excludePathPatterns("/product/**");
+                .excludePathPatterns("/product/**")
+                .excludePathPatterns("/admin/login")
+                .excludePathPatterns("/sales/login");
     }
 }
