@@ -71,16 +71,16 @@ const editPassword = async () => {
   }
 }
 //退出登录
-const quit = () => {
+const quit = async () => {
   switch (userStore.tag) {
     case "user":
-      userExitService();
+      await userExitService();
       break;
     case "sales":
-      salesExitService();
+      await salesExitService();
       break;
     case "admin":
-      adminExitService();
+      await adminExitService();
       break;
     default:
       break;

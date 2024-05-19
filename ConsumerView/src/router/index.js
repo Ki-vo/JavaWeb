@@ -14,20 +14,23 @@ const routes = [
     {
         path: "/", component: NavBarView, redirect: '/home',
         children: [
-            //普通用户
+            //顾客
             {path: '/home', component: HomeView},
             {path: '/cart', component: CartView},
             {path: '/detail', component: DetailView},
             {name: 'DetailView', path: '/detail/:id', component: DetailView},
+            //销售人员
+            {path: '/sales', component: SalesView},
+            //管理员
+            {path: "/admin", component: AdminView},
             //测试
             {path: '/test', component: TestView}
         ]
     },
+    //登录
     {path: '/login', component: LoginView},
-    //销售人员&管理员
     {path: '/admin/login', component: ManagerLoginView},
-    {path: '/sales', component: SalesView},
-    {path: "/admin", component: AdminView},
+
 ]
 
 const router = createRouter({
