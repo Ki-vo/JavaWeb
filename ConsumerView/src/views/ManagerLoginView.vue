@@ -4,7 +4,6 @@ import {ElMessage} from "element-plus";
 import {ref} from 'vue'
 import {useRouter} from "vue-router";
 
-const emit = defineEmits(['loginFlush'])
 const store = useUserStore()
 const router = useRouter()
 //登录界面的各项数据
@@ -48,7 +47,6 @@ const login = async () => {
         type: 'success',
         message: '登录成功'
       });
-      emit('loginFlush')
       router.push("/sales")
     } else {
       ElMessage({
@@ -66,7 +64,6 @@ const login = async () => {
         type: 'success',
         message: '登录成功'
       });
-      emit('loginFlush')
       router.push("/admin")
     } else {
       ElMessage({

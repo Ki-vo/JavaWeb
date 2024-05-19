@@ -16,18 +16,18 @@ const routes = [
         children: [
             //普通用户
             {path: '/home', component: HomeView},
-            {path: '/login', component: LoginView},
             {path: '/cart', component: CartView},
             {path: '/detail', component: DetailView},
             {name: 'DetailView', path: '/detail/:id', component: DetailView},
-            //销售人员&管理员
-            {path: '/admin/login', component: ManagerLoginView},
-            {path: '/sales', component: SalesView},
-            {path: "/admin", component: AdminView},
             //测试
             {path: '/test', component: TestView}
         ]
-    }
+    },
+    {path: '/login', component: LoginView},
+    //销售人员&管理员
+    {path: '/admin/login', component: ManagerLoginView},
+    {path: '/sales', component: SalesView},
+    {path: "/admin", component: AdminView},
 ]
 
 const router = createRouter({

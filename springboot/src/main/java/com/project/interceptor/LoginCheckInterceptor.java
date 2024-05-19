@@ -58,7 +58,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
-
         log.info("parse success");
         return true;
     }

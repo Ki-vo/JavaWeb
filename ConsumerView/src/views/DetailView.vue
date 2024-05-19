@@ -7,6 +7,8 @@ import {useRoute, useRouter} from "vue-router";
 import {useUserStore, useCartStore} from "@/stores";
 import {productGetByIdService} from "@/api/product";
 import {addBrowseLog} from "@/api/log";
+import {baseURL} from "@/utils/jwt";
+import {checkLoginStatusService} from "@/api/user";
 
 const route = useRoute()
 const router = useRouter()
@@ -26,14 +28,15 @@ const openTime = ref()
 const closeTime = ref()
 
 
-const submit = function () {
+const submit = async function () {
+  await checkLoginStatusService()
   if (userStore.token === null || userStore.tag !== "user") {
     ElMessage.error('请先登录')
     router.push('/login')
   } else {
     const cart = ref(cartStore.cart)
     for (const key in cart.value) {
-      if (cart.value[key].id === id) {
+      if (cart.value[key].id === id.value) {
         cartStore.cart[key].num += num.value
         ElMessage.success("已加入购物车")
         router.push('/cart')
@@ -41,7 +44,7 @@ const submit = function () {
       }
     }
   }
-  cartStore.addProduct(id, name, price, num.value, img[0])
+  cartStore.addProduct(id.value, name.value, price.value, num.value, img.value)
   ElMessage.success("已加入购物车")
   router.push('/cart')
 }
@@ -56,7 +59,7 @@ onMounted(async () => {
   seller.value = res.value.seller
   price.value = res.value.price
   rest.value = res.value.rest
-  img.value = res.value.cover_img
+  img.value = baseURL + "/cover/" + res.value.coverImg
 
   openTime.value = new Date().getSeconds()
 })
@@ -82,25 +85,25 @@ onUnmounted(async () => {
 
 <template>
   <el-container>
+    <el-header class="head">
+      <el-button @click="router.go(-1)" style="margin: 0 30px">
+        <el-icon>
+          <arrow-left/>
+        </el-icon>
+      </el-button>
+      <h2 style="font-size: 30px"> 商品介绍</h2>
+    </el-header>
+
     <el-main class="main">
-      <el-row class="head">
-        <el-col :span="2">
-          <el-button @click="router.go(-1)">
-            <el-icon>
-              <arrow-left/>
-            </el-icon>
-          </el-button>
+      <el-row style="padding: 15px 0">
+        <el-col :span="10">
+          <div style=" background-color: #ccc;width: 100% ;height: 100%;
+              display: flex;justify-content: center;align-items: center;margin: 0 80px">
+            <img :src="img" style="width: 75%"/>
+          </div>
         </el-col>
-      </el-row>
-      <br>
-      <el-row style="font-size: 22px"> 商品介绍</el-row>
-      <br>
-      <el-row>
-        <el-col :span="12">
-          <el-image :src="img" :fit="'cover'"></el-image>
-        </el-col>
-        <el-col :span="2"></el-col>
-        <el-col :span="6">
+        <el-col :span="6"/>
+        <el-col :span="6" style="margin: 50px 0">
           <h2>{{ name }}</h2>
           <div>商家：{{ seller }}</div>
           <h3 style="color: orange">￥{{ price }}</h3>
@@ -117,14 +120,15 @@ onUnmounted(async () => {
 
 <style>
 .main {
-  padding-left: 15%;
-  padding-right: 15%;
-  height: 100%;
+  margin: 0 10%;
+  padding: 50px 20px;
+  background-color: #f8f8f8;
+  border-radius: 20px;
+  min-height: 580px;
 }
 
 .head {
   display: flex;
-  text-align: center;
   align-items: center;
 }
 </style>

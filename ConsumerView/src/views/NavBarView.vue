@@ -1,7 +1,7 @@
 <script setup>
 import {ArrowDown, CircleClose, Lock, ShoppingCart, SwitchButton, User} from "@element-plus/icons-vue";
 import {useCartStore, useUserStore} from "@/stores";
-import {onMounted, ref, onUnmounted} from "vue";
+import {onMounted, ref, onUnmounted, onBeforeUnmount} from "vue";
 import DeregisterConfirm from "@/views/components/DeregisterConfirm.vue";
 import {ElMessage} from "element-plus";
 import {editPasswordService} from "@/api/password";
@@ -71,16 +71,16 @@ const editPassword = async () => {
   }
 }
 //退出登录
-const quit = async () => {
+const quit = () => {
   switch (userStore.tag) {
     case "user":
-      await userExitService();
+      userExitService();
       break;
     case "sales":
-      await salesExitService();
+      salesExitService();
       break;
     case "admin":
-      await adminExitService();
+      adminExitService();
       break;
     default:
       break;
@@ -111,70 +111,73 @@ onMounted(async () => {
   // }
   flush()
 })
-onUnmounted(() => {
-
+onBeforeUnmount(() => {
+  quit()
 })
 </script>
 <template>
-  <el-header height="60px" class="navbar">
-    <el-row class="header">
-      <el-col :span="2" class="cart">
-        <el-link href="/home" v-if="userStore.tag==='user'&&userStore.token!==null">
-          <el-button>
-            首页
-          </el-button>
-        </el-link>
-      </el-col>
-      <el-col :span="18"></el-col>
-      <el-col :span="2" class="cart">
-        <el-link href="/cart" v-if="userStore.tag==='user'&&userStore.token!==null">
-          <el-button class="cart-icon">
-            <el-icon :size="18">
-              <shopping-cart/>
-            </el-icon>
-          </el-button>
-        </el-link>
-      </el-col>
-      <el-col :span="2" class="login">
-        <el-dropdown v-if="isLogin">
-          <el-button size="large" style="font-size: large">
-            <el-icon>
-              <user/>
-            </el-icon>
-            {{ userStore.username }}
-            <el-icon class="el-icon--right">
-              <arrow-down/>
-            </el-icon>
-          </el-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="dialogFormVisible=true">
-                <el-icon>
-                  <Lock/>
-                </el-icon>
-                修改密码
-              </el-dropdown-item>
-              <el-dropdown-item @click="deregister">
-                <el-icon>
-                  <CircleClose/>
-                </el-icon>
-                注销
-              </el-dropdown-item>
-              <el-dropdown-item @click="quit">
-                <el-icon>
-                  <switch-button/>
-                </el-icon>
-                退出
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <el-link v-else href="/login" :underline="false" class="login-button">登录</el-link>
-      </el-col>
-    </el-row>
-  </el-header>
-  <router-view @login-flush="flush"></router-view>
+  <!--布局容器-->
+  <el-container>
+    <el-header height="80px" class="navbar">
+      <!--首页按钮-->
+      <el-link href="/home">
+        <el-button size="large">
+          首页
+        </el-button>
+      </el-link>
+      <div style="flex-grow: 1"/>
+      <!--购物车按钮-->
+      <el-link href="/cart" v-if="userStore.tag==='user'&&userStore.token!==null">
+        <el-button class="cart-icon" size="large">
+          <el-icon :size="25">
+            <shopping-cart/>
+          </el-icon>
+        </el-button>
+      </el-link>
+      <!--管理者登录按钮-->
+      <el-link v-if="!isLogin" href="/admin/login" :underline="false" class="admin-button">管理者登录</el-link>
+      <!--顾客登录按钮-->
+      <el-dropdown v-if="isLogin" style="display: flex;align-items: center;">
+        <el-button size="large" style="font-size: large">
+          <el-icon>
+            <user/>
+          </el-icon>
+          {{ userStore.username }}
+          <el-icon class="el-icon--right">
+            <arrow-down/>
+          </el-icon>
+        </el-button>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="dialogFormVisible=true">
+              <el-icon>
+                <Lock/>
+              </el-icon>
+              修改密码
+            </el-dropdown-item>
+            <el-dropdown-item @click="deregister">
+              <el-icon>
+                <CircleClose/>
+              </el-icon>
+              注销
+            </el-dropdown-item>
+            <el-dropdown-item @click="quit">
+              <el-icon>
+                <switch-button/>
+              </el-icon>
+              退出
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+      <el-link v-else href="/login" :underline="false" class="login-button">登录</el-link>
+    </el-header>
+    <!--路由界面-->
+    <router-view class="full_screen_background"></router-view>
+  </el-container>
+  <!--注销界面-->
   <deregister-confirm ref="deregisterConfirmRef" @success="quit"></deregister-confirm>
+  <!-- 修改密码界面-->
   <el-dialog v-model="dialogFormVisible" title="修改密码" width="500">
     <el-form :model="form">
       <el-form-item label="旧密码" :label-width="formLabelWidth">
@@ -199,47 +202,30 @@ onUnmounted(() => {
 </template>
 
 <style>
+.full_screen_background {
+  background-color: #ffbbbb
+}
+
 .navbar {
   background-color: black;
+  display: flex;
+  padding: 0 50px;
 }
 
-.el-row {
-  margin-bottom: 20px;
-  height: auto;
-}
-
-.el-row.header {
-  height: 60px;
-}
-
-.el-row:last-child {
-  margin-bottom: 0;
-}
-
-.el-col {
-  border-radius: 4px;
-}
-
-.el-col.cart {
+.cart-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.el-col.cart.cart-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.el-col.login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0 20px;
 }
 
 .login-button {
-  font-size: 20px;
+  padding: 0 20px;
+  font-size: 18px;
   color: white;
+}
+
+.admin-button {
+  margin: 0 30px;
 }
 </style>

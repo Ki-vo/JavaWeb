@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getById(Integer id) {
+    public Product getProductById(Integer id) {
         try {
             return productMapper.getById(id);
         } catch (Exception e) {
@@ -66,12 +66,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String getImgAddrById(Integer id) {
+    public String getImgById(Integer id) {
         return productMapper.getCoverImgAddr(id);
     }
 
     @Override
-    public void delById(Integer id) {
+    public void deleteProductById(Integer id) {
         try {
             productMapper.delById(id);
         } catch (Exception e) {

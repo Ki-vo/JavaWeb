@@ -3,17 +3,15 @@ import {ref} from 'vue'
 
 //用户模块
 export const useCartStore = defineStore('goods', () => {
-        const product = ref()
         const cart = ref([])
         //添加商品
         const addProduct = (id, name, price, num, cover_img) => {
-            product.value = {id, name, price, num, cover_img}
-            cart.value.push(product.value)
+            const product = {id, name, price, num, cover_img}
+            cart.value.push(product)
         }
         //清空购物车
         const clearProduct = () => {
-            product.value = null
-            cart.value = []
+            cart.value.splice(0, cart.value.length)
         }
         return {
             cart,

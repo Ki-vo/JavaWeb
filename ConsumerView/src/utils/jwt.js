@@ -30,8 +30,14 @@ request.interceptors.request.use(config => {
 
 // response拦截器
 request.interceptors.response.use(response => {
+
     //res即前面的result.data
     let result = response.data
+    if (result.msg === 'NOT_LOGIN') {
+        //jwt令牌过期
+        const user = useUserStore(pinia)
+        user.clearLoginInfo()
+    }
     if (typeof result === 'string') {
         result = result ? JSON.parse(result) : result
     }

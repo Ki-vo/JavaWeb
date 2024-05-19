@@ -16,10 +16,10 @@ public interface ProductService {
 
     List<Product> getHotProduct();
 
-    Product getById(Integer id);
+    Product getProductById(Integer id);
 
-    String getImgAddrById(Integer id);
+    String getImgById(Integer id);
 
-    void delById(Integer id);
+    void deleteProductById(Integer id);
 
 }

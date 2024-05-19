@@ -38,7 +38,7 @@ const open = async (row) => {
     console.log(res.data)
     const {id, name, seller, price, rest} = res.data
     const cate_id = res.data.kind
-    const cover_img = res.data.coverImgAddr
+    const cover_img = res.data.coverImg
     formModel.value = {id, name, cate_id, seller, price, rest, cover_img}
     coverImgUrl.value = baseURL + cover_img
   } else {

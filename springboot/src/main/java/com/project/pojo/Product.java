@@ -16,5 +16,14 @@ public class Product {
     private String seller;
     private Integer price;
     private Integer rest;
-    private String coverImgAddr;
+    private String coverImg;
+
+    public Product(String name, Integer cateId, String seller, Integer price, Integer rest, String coverImg) {
+        this.name = name;
+        this.cateId = cateId;
+        this.seller = seller;
+        this.price = price;
+        this.rest = rest;
+        this.coverImg = coverImg;
+    }
 }

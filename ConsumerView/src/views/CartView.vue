@@ -5,6 +5,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {ArrowLeft} from "@element-plus/icons-vue";
 import {useRouter} from "vue-router";
 import {addOrder, getPayStatus} from "@/api/order";
+import {checkLoginStatusService} from "@/api/user";
 
 const dialogFormVisible = ref(false)
 
@@ -13,11 +14,10 @@ const router = useRouter()
 const userStore = useUserStore()
 const cartStore = useCartStore()
 
-let goods = cartStore.cart
-let goodsData = ref(goods)
-let selectedCount = ref(0)
-let selectedPrice = ref(0)
-let selectedGoods = ref([])
+const goods = ref(cartStore.cart)
+const selectedCount = ref(0)
+const selectedPrice = ref(0)
+const selectedGoods = ref([])
 //更新选择项的data
 const updateData = function () {
   let count = 0
@@ -40,11 +40,15 @@ const updateSelected = function (selection) {
 }
 //删除一行商品
 const delRow = function (index) {
-  goodsData.value.splice(index, 1)
+  cartStore.cart.splice(index, 1)
+}
+//删除选中商品
+const delSelected = () => {
+  cartStore.cart = goods.value.filter(x => !selectedGoods.value.includes(x))
+  goods.value = cartStore.cart
 }
 //清空购物车
-const clear = function () {
-  goodsData.value = []
+const clear = async function () {
   cartStore.clearProduct()
 }
 //提交订单
@@ -90,6 +94,7 @@ const sendOrder = async function () {
       const result = await addOrder(requestData)
       if (result.code === 1) {
         ElMessage.success("订单已提交")
+        delSelected()
       } else {
         ElMessage.error("订单提交失败")
       }
@@ -97,78 +102,62 @@ const sendOrder = async function () {
       ElMessage.info("支付尚未完成，请稍后重试")
     }
   }
-
-
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await checkLoginStatusService()
   if (userStore.token === null || userStore.tag !== "user") {
     ElMessage.error("请先登录")
     router.push('/login')
   } else {
-    goods = cartStore.cart
+    goods.value = cartStore.cart
   }
 })
 </script>
 
 <template>
-  <el-container>
-    <el-main class="shopping-cart">
-      <el-row class="title">
-        <el-col :span="2">
-          <el-button @click="this.$router.go(-1)">
-            <el-icon>
-              <arrow-left/>
-            </el-icon>
-          </el-button>
-        </el-col>
-        <el-col :span="2">购物车</el-col>
-      </el-row>
-      <br><br>
-      <el-scrollbar max-height="500px">
-
-        <el-table :data="goodsData" border style="width: 100%" class="good" @selection-change="updateSelected">
-          <el-table-column fixed type="selection" width="55" align="center"></el-table-column>
-          <el-table-column label="商品图" align="center">
-            <template #default="scoped">
-              <el-image :src=scoped.row.cover_img style="height: 100px;width: 100px"/>
-            </template>
-          </el-table-column>
-          <el-table-column prop="name" label="商品名" align="center"/>
-          <el-table-column prop="price" label="商品单价" align="center"/>
-          <el-table-column label="商品数量" width="200" align="center">
-            <template #default="scoped">
-              <el-input-number :min="1" v-model="scoped.row.num" @change="updateData"></el-input-number>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" align="center">
-            <template #default="scoped">
-              <el-button type="danger" @click="delRow(scoped.$index)">删除</el-button>
-            </template>
-          </el-table-column>
-          <template #empty>
-            <el-empty description="没有商品"></el-empty>
-          </template>
-        </el-table>
-
-      </el-scrollbar>
-      <br><br>
-      <el-row>
-        <el-col class="submit-button" :span="6">
-          <el-button type="primary" @click="submit">提交订单</el-button>
-        </el-col>
-        <el-col :span="8"></el-col>
-        <el-col :span="4">商品数量：{{ selectedCount }}</el-col>
-        <el-col :span="4">合计价格：{{ selectedPrice }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="18"/>
-        <el-col class="submit-button" :span="6">
-          <el-button type="danger" @click="clear">清空购物车</el-button>
-        </el-col>
-      </el-row>
-    </el-main>
-  </el-container>
+  <el-button @click="delSelected"></el-button>
+  <div class="title">
+    <el-button size="large" @click="router.go(-1)">
+      <el-icon>
+        <arrow-left/>
+      </el-icon>
+    </el-button>
+    <h2 style="margin: 0 20px">购物车</h2>
+  </div>
+  <el-main class="shopping-cart">
+    <el-table :data="goods" height="450px" border style="margin: 20px 0; width: 100%" class="good"
+              @selection-change="updateSelected">
+      <el-table-column fixed type="selection" width="55" align="center"></el-table-column>
+      <el-table-column label="商品图" align="center">
+        <template #default="scoped">
+          <el-image :src=scoped.row.cover_img style="height: 100px;width: 100px"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="name" label="商品名" align="center"/>
+      <el-table-column prop="price" label="商品单价" align="center"/>
+      <el-table-column label="商品数量" width="200" align="center">
+        <template #default="scoped">
+          <el-input-number :min="1" v-model="scoped.row.num" @change="updateData"></el-input-number>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center">
+        <template #default="scoped">
+          <el-button type="danger" @click="delRow(scoped.$index)">删除</el-button>
+        </template>
+      </el-table-column>
+      <template #empty>
+        <el-empty description="没有商品"></el-empty>
+      </template>
+    </el-table>
+    <div style="display: flex;align-items: center">
+      <el-button type="danger" @click="clear">清空购物车</el-button>
+      <div style="flex-grow: 1"/>
+      <div style="margin: 0 20px">商品数量：{{ selectedCount }}</div>
+      <div style="margin: 0 20px">合计价格：{{ selectedPrice }}</div>
+      <el-button type="primary" @click="submit">提交订单</el-button>
+    </div>
+  </el-main>
 
   <el-dialog v-model="dialogFormVisible" title="支付方式" width="500">
     <el-row>
@@ -199,7 +188,7 @@ onMounted(() => {
 
 .title {
   display: flex;
-  text-align: center;
   align-items: center;
+  margin: 10px 50px;
 }
 </style>

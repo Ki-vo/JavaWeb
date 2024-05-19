@@ -1,23 +1,14 @@
 package com.project.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.project.anno.Log;
 import com.project.pojo.Order;
-import com.project.pojo.Product;
 import com.project.pojo.Result;
 import com.project.service.*;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -58,7 +49,7 @@ public class OrderController {
 
             for (Order order : orders) {
                 log.info(orders.toString());
-                String productName = productService.getById(order.getProductId()).getName();
+                String productName = productService.getProductById(order.getProductId()).getName();
                 order.setTimeStamp(timeStamp);
                 orderService.addOrder(order);
                 content.append(String.format("%s 数量:%d\n", productName, order.getPurchaseNum()));

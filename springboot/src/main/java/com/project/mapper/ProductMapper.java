@@ -16,17 +16,17 @@ public interface ProductMapper {
     @Select("select * from product order by id desc limit 8")
     List<Product> getHotProduct();
 
-    @Insert("insert into product(name, cate_id, seller, price, rest, cover_img_addr) " +
-            "VALUES(#{name},#{cateId},#{seller},#{price},#{rest},#{coverImgAddr})")
+    @Insert("insert into product(name, cate_id, seller, price, rest, cover_img) " +
+            "VALUES(#{name},#{cateId},#{seller},#{price},#{rest},#{coverImg})")
     void addProduct(Product product);
 
-    @Update("update product set name=#{name},seller=#{seller},price=#{price},rest=#{rest},cover_img_addr=#{coverImgAddr} where id=#{id} ")
+    @Update("update product set name=#{name},seller=#{seller},price=#{price},rest=#{rest},cover_img=#{coverImg} where id=#{id} ")
     void updateProduct(Product product);
 
     @Select("select * from product where id = #{id}")
     Product getById(Integer id);
 
-    @Select("select cover_img_addr from product where id=#{id}")
+    @Select("select cover_img from product where id=#{id}")
     String getCoverImgAddr(Integer id);
 
     @Delete("delete from product where id=#{id}")

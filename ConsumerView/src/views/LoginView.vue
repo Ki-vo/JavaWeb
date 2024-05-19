@@ -5,7 +5,6 @@ import {ref} from 'vue'
 import {useRouter} from "vue-router";
 import {useUserStore} from "@/stores";
 
-const emit = defineEmits(['loginFlush'])
 const store = useUserStore()
 const router = useRouter()
 //控制注册与登录表单的显示， 默认显示注册
@@ -116,7 +115,6 @@ const login = async () => {
       type: 'success',
       message: '登录成功'
     });
-    emit('loginFlush')
     router.go(-1)
   } else {
     ElMessage({

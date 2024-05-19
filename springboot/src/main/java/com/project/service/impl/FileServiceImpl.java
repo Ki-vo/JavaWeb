@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,20 +19,21 @@ import java.util.Date;
 @Service
 public class FileServiceImpl implements FileService {
 
+    private static final String COVER_IMAGES_DIR = System.getProperty("user.dir") + File.separator + "cover_image" + File.separator;
+
     @Override
-    public String saveImg(MultipartFile file) {
+    public String saveImg(MultipartFile file, String dir) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String timestamp = dateFormat.format(new Date());
         String filename = timestamp + ".png";
 
         try {
-            String path = System.getProperty("user.dir") + File.separator + "cover_image" + File.separator;
-            File targetFile = new File(path + filename);
+            File targetFile = new File(dir + filename);
             file.transferTo(targetFile);
-            log.info("保存成功{}{}", path, filename);
-            return path + filename;
+            log.info("图片保存成功:{}{}", dir, filename);
+            return filename;
         } catch (IOException e) {
-            log.info("保存失败{}", e.getMessage());
+            log.info("图片保存失败:{}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -42,14 +45,23 @@ public class FileServiceImpl implements FileService {
         // 尝试删除文件
         if (file.exists()) {
             if (file.delete()) {
-                log.info("文件已删除:{}", path);
+                log.info("图片已删除:{}", path);
             } else {
-                log.info("文件删除失败:{}", path);
+                log.info("图片删除失败:{}", path);
                 throw new RuntimeException("Delete Failed!");
             }
         } else {
-            log.info("文件不存在:{}", path);
+            log.info("目标图片不存在:{}", path);
             throw new RuntimeException("File Not Found!");
         }
     }
+
+//    @Override
+//    public MultipartFile getImage(String imageName) throws FileNotFoundException {
+//        String path = COVER_IMAGES_DIR + imageName;
+//        File file = new File(path);
+//        if (!file.exists() && file.isFile() && file.canRead()) {
+//            FileInputStream stream = new FileInputStream(file);
+//        }
+//    }
 }
