@@ -1,11 +1,13 @@
 <script setup>
-
 import {ArrowDown, CircleClose, Lock, ShoppingCart, SwitchButton, User} from "@element-plus/icons-vue";
 import {useCartStore, useUserStore} from "@/stores";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, onUnmounted} from "vue";
 import DeregisterConfirm from "@/views/components/DeregisterConfirm.vue";
 import {ElMessage} from "element-plus";
 import {editPasswordService} from "@/api/password";
+import {userExitService} from "@/api/user";
+import {salesExitService} from "@/api/sales";
+import {adminExitService} from "@/api/admin";
 
 const userStore = useUserStore()
 const cartStore = useCartStore()
@@ -19,9 +21,9 @@ const form = ref({
   newPassword: '',
   confirmPassword: ''
 })
+//刷新导航栏状态
 const flush = () => {
   isLogin.value = userStore.token !== null;
-
 }
 //修改密码
 const editPassword = async () => {
@@ -69,7 +71,20 @@ const editPassword = async () => {
   }
 }
 //退出登录
-const quit = () => {
+const quit = async () => {
+  switch (userStore.tag) {
+    case "user":
+      await userExitService();
+      break;
+    case "sales":
+      await salesExitService();
+      break;
+    case "admin":
+      await adminExitService();
+      break;
+    default:
+      break;
+  }
   userStore.clearLoginInfo()
   isLogin.value = false
   cartStore.clearProduct()
@@ -96,13 +111,15 @@ onMounted(async () => {
   // }
   flush()
 })
+onUnmounted(() => {
 
+})
 </script>
 <template>
   <el-header height="60px" class="navbar">
     <el-row class="header">
       <el-col :span="2" class="cart">
-        <el-link href="/home" v-if="userStore.tag==='user'">
+        <el-link href="/home" v-if="userStore.tag==='user'&&userStore.token!==null">
           <el-button>
             首页
           </el-button>
@@ -110,7 +127,7 @@ onMounted(async () => {
       </el-col>
       <el-col :span="18"></el-col>
       <el-col :span="2" class="cart">
-        <el-link href="/cart" v-if="userStore.tag==='user'">
+        <el-link href="/cart" v-if="userStore.tag==='user'&&userStore.token!==null">
           <el-button class="cart-icon">
             <el-icon :size="18">
               <shopping-cart/>

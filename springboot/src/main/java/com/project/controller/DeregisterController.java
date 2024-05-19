@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.anno.Log;
 import com.project.pojo.Result;
 import com.project.pojo.User;
 import com.project.service.UserService;
@@ -17,6 +18,7 @@ public class DeregisterController {
     @Autowired
     private UserService userService;
 
+    @Log
     @PostMapping("/user/delete")
     public Result deregister(@RequestBody User user) {
         User u = userService.loginVerify(user);

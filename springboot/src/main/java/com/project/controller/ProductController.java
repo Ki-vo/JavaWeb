@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.anno.Log;
 import com.project.pojo.Product;
 import com.project.pojo.Result;
 import com.project.service.FileService;
@@ -21,6 +22,7 @@ public class ProductController {
     @Autowired
     private FileService fileService;
 
+    @Log
     @PostMapping("/product/add")
     public Result addProduct(@RequestParam("name") String name,
                              @RequestParam("cate_id") Integer cateId,
@@ -53,6 +55,7 @@ public class ProductController {
         }
     }
 
+    @Log
     @PostMapping("/product/update")
     public Result editProduct(@RequestParam("id") Integer id,
                               @RequestParam("name") String name,
@@ -139,8 +142,9 @@ public class ProductController {
         }
     }
 
+    @Log
     @GetMapping("/product/del")
-    public Result delById(@RequestParam("id") Integer id) {
+    public Result delProductById(@RequestParam("id") Integer id) {
         try {
             productService.delById(id);
             return Result.success();

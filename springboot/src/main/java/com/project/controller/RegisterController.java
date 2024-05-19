@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.anno.Log;
 import com.project.pojo.Result;
 import com.project.pojo.User;
 import com.project.service.UserService;
@@ -22,7 +23,6 @@ public class RegisterController {
 
     @Autowired
     private UserService userService;
-
 
     @PostMapping("/user/register")
     public Result register(@RequestBody User user) {

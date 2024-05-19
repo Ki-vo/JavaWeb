@@ -1,6 +1,7 @@
 package com.project.controller;
 
 
+import com.project.anno.Log;
 import com.project.pojo.Result;
 import com.project.pojo.Salesman;
 import com.project.service.SalesService;
@@ -18,6 +19,7 @@ public class SalesController {
     @Autowired
     private SalesService salesService;
 
+    @Log
     @GetMapping("/sales/add")
     public Result addSalesman(@RequestParam("type") Integer type) {
         Salesman salesman = new Salesman("1234", type);
@@ -63,8 +65,9 @@ public class SalesController {
         }
     }
 
+    @Log
     @GetMapping("/sales/del")
-    public Result delById(@RequestParam("id") String name) {
+    public Result delSalesmanById(@RequestParam("id") String name) {
         try {
             Integer id = Integer.parseInt(name);
             salesService.delSales(id);

@@ -9,9 +9,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginLog {
+public class OperateLog {
+    private Integer id;
+    private String userId;
     private String role;
     private String ipAddress;
-    private LocalDateTime loginTime;
-    private LocalDateTime exitTime;
+    private String operation;
+    private LocalDateTime operationTime;
 }

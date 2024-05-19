@@ -6,17 +6,23 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {onMounted, ref} from "vue";
 import {addSalesService, deleteSalesService, getListService, resetPasswordService} from "@/api/sales";
 import router from "@/router";
-import ProductEdit from "@/views/components/ProductEdit.vue";
 import {getAllProductService} from "@/api/product";
+import {deleteBrowseLog, getOperateLog} from "@/api/log";
 
 const store = useUserStore()
 const loading = ref(false)
 const menu_item = ref('1')
 const addSalesVisible = ref(false);
 const cate = ref(['汽车', '家居', '服装', '食品', '数码', '玩具'])
+const roles = ref({
+  "user": "顾客",
+  "sales": "销售人员",
+  "admin": "管理员"
+})
 const cate_id = ref('')
 const salesmanList = ref([])
 const productList = ref([])
+const operateLogList = ref([])
 
 const getSalesList = async () => {
   loading.value = true
@@ -30,6 +36,13 @@ const getProductList = async () => {
   loading.value = true
   const res = await getAllProductService()
   productList.value = res.data
+  loading.value = false
+}
+
+const getOperateLogList = async () => {
+  loading.value = true
+  const res = await getOperateLog()
+  operateLogList.value = res.data
   loading.value = false
 }
 
@@ -83,6 +96,26 @@ const onResetPassword = (row) => {
   })
 }
 
+const onDelOperateLog = (row) => {
+  ElMessageBox.confirm(
+      '确定删除该条日志吗？',
+      '删除日志',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(async () => {
+    const res = await deleteBrowseLog(row.id)
+    if (res.code === 1) {
+      ElMessage.success('删除成功')
+    } else {
+      ElMessage.error(res.msg)
+    }
+    await getOperateLogList()
+  })
+}
+
 onMounted(async () => {
   if (store.token === null || store.tag !== "admin") {
     ElMessage.error('请先登录')
@@ -90,6 +123,7 @@ onMounted(async () => {
   } else {
     await getSalesList()
     await getProductList()
+    await getOperateLogList()
   }
 })
 </script>
@@ -103,11 +137,14 @@ onMounted(async () => {
         <el-menu-item index="1" @click="menu_item='1'">
           <span>销售人员账号管理</span>
         </el-menu-item>
-<!--        <el-menu-item index="2" @click="menu_item='2'">-->
-<!--          <span>商品销售业绩</span>-->
-<!--        </el-menu-item>-->
+        <!--        <el-menu-item index="2" @click="menu_item='2'">-->
+        <!--          <span>商品销售业绩</span>-->
+        <!--        </el-menu-item>-->
         <el-menu-item index="3" @click="menu_item='3'">
           <span>商品管理</span>
+        </el-menu-item>
+        <el-menu-item index="4" @click="menu_item='4'">
+          <span>操作日志</span>
         </el-menu-item>
       </el-menu>
     </el-col>
@@ -144,22 +181,22 @@ onMounted(async () => {
           </template>
         </el-table>
       </page-container>
-<!--      <page-container title="商品销售业绩" style="width: 100%" v-if="menu_item==='2'" :visible="false">-->
-<!--        <el-table v-loading="loading" :data="salesmanList" stripe-->
-<!--                  :default-sort="{ prop: 'id' }">-->
-<!--          <el-table-column type="index" label="序号" width="100"></el-table-column>-->
-<!--          <el-table-column label="账户ID" prop="id" sortable></el-table-column>-->
-<!--          <el-table-column label="商品编号" prop="type" sortable></el-table-column>-->
-<!--          <el-table-column label="商品种类" prop="type">-->
-<!--            <template #default="scoped">-->
-<!--              {{ cate[scoped.row.type - 1] }}-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <template #empty>-->
-<!--            <el-empty description="没有数据"></el-empty>-->
-<!--          </template>-->
-<!--        </el-table>-->
-<!--      </page-container>-->
+      <!--      <page-container title="商品销售业绩" style="width: 100%" v-if="menu_item==='2'" :visible="false">-->
+      <!--        <el-table v-loading="loading" :data="salesmanList" stripe-->
+      <!--                  :default-sort="{ prop: 'id' }">-->
+      <!--          <el-table-column type="index" label="序号" width="100"></el-table-column>-->
+      <!--          <el-table-column label="账户ID" prop="id" sortable></el-table-column>-->
+      <!--          <el-table-column label="商品编号" prop="type" sortable></el-table-column>-->
+      <!--          <el-table-column label="商品种类" prop="type">-->
+      <!--            <template #default="scoped">-->
+      <!--              {{ cate[scoped.row.type - 1] }}-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <template #empty>-->
+      <!--            <el-empty description="没有数据"></el-empty>-->
+      <!--          </template>-->
+      <!--        </el-table>-->
+      <!--      </page-container>-->
       <page-container title="商品管理" style="width: 100%" v-if="menu_item==='3'">
         <el-table v-loading="loading" :data="productList " stripe height="520"
                   :default-sort="{ prop: 'id', order: 'descending' }">
@@ -174,6 +211,29 @@ onMounted(async () => {
           <el-table-column label="商家" prop="seller"></el-table-column>
           <el-table-column label="单价" prop="price" sortable></el-table-column>
           <el-table-column label="库存" prop="rest" sortable></el-table-column>
+          <template #empty>
+            <el-empty description="没有数据"></el-empty>
+          </template>
+        </el-table>
+      </page-container>
+      <page-container title="操作日志" style="width: 100%" v-if="menu_item==='4'">
+        <el-table v-loading="loading" :data="operateLogList " stripe height="520"
+                  :default-sort="{ prop: 'id', order: 'descending' }">
+          <el-table-column label="日志序号" prop="id" sortable width="150"></el-table-column>
+          <el-table-column label="用户ID" prop="userId"></el-table-column>
+          <el-table-column label="角色">
+            <template #default="scoped">
+              {{ roles[scoped.row.role] }}
+            </template>
+          </el-table-column>
+          <el-table-column label="IP地址" prop="ipAddress"></el-table-column>
+          <el-table-column label="操作内容" prop="operation"></el-table-column>
+          <el-table-column label="操作时间" prop="operationTime" sortable></el-table-column>
+          <el-table-column label="操作" width="100">
+            <template #default="{row}">
+              <el-button type="danger" :icon="Delete" circle plain @click="onDelOperateLog(row)"></el-button>
+            </template>
+          </el-table-column>
           <template #empty>
             <el-empty description="没有数据"></el-empty>
           </template>

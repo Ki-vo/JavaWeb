@@ -15,3 +15,7 @@ export const userLoginService = (loginData) => {
 export const userDeregisterService = (data) => {
     return request.post('/user/delete', data)
 }
+//用户登出接口
+export const userExitService = () => {
+    return request.get('/user/exit')
+}

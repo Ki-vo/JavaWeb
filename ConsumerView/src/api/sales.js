@@ -4,6 +4,10 @@ export const salesLoginService = (loginData) => {
     return request.post('/sales/login', loginData);
 }
 
+export const salesExitService = () => {
+    return request.get('/sales/exit')
+}
+
 export const getTypeById = (id) => {
     return request.get('/sales/type', {
         params: {id}

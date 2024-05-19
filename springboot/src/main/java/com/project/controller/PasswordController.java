@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.anno.Log;
 import com.project.pojo.Admin;
 import com.project.pojo.Result;
 import com.project.pojo.Salesman;
@@ -24,6 +25,7 @@ public class PasswordController {
 
     private final String defaultSalesPassword = "1234";
 
+    @Log
     @PostMapping("/password/edit")
     public Result editPassword(@RequestParam("id") String username,
                                @RequestParam("tag") String tag,

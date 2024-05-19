@@ -6,7 +6,7 @@ import {ElMessage} from "element-plus";
 import {useRoute, useRouter} from "vue-router";
 import {useUserStore, useCartStore} from "@/stores";
 import {productGetByIdService} from "@/api/product";
-import {addBrowseLog} from "@/api/user_log";
+import {addBrowseLog} from "@/api/log";
 
 const route = useRoute()
 const router = useRouter()

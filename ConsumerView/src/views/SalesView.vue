@@ -8,7 +8,7 @@ import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
 import {getTypeById} from "@/api/sales";
 import {useUserStore} from "@/stores";
-import {getBrowseLog, getPurchaseLog} from "@/api/user_log";
+import {getBrowseLog} from "@/api/log";
 import {getOrderByCateId} from "@/api/order";
 
 const store = useUserStore()
@@ -28,7 +28,7 @@ const getProductList = async (type) => {
   loading.value = false
 }
 
-const getBrowserLogList = async () => {
+const getBrowseLogList = async () => {
   const res = await getBrowseLog(store.username)
   browserLogList.value = res.data
   console.log(browserLogList.value)
@@ -70,7 +70,7 @@ onMounted(async () => {
     sales_type.value = (await getTypeById(store.username)).data
     console.log(sales_type.value)
     await getProductList(sales_type.value)
-    await getBrowserLogList()
+    await getBrowseLogList()
     await getPurchaseLogList()
   }
 })
