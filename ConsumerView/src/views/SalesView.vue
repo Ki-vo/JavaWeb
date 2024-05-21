@@ -153,7 +153,8 @@ onMounted(async () => {
           <el-table-column label="日志ID" prop="id" sortable></el-table-column>
           <el-table-column label="用户ID" prop="userId" sortable></el-table-column>
           <el-table-column label="商品ID" prop="productId"></el-table-column>
-          <el-table-column label="购买数量" prop="purchaseNum"></el-table-column>
+          <el-table-column label="购买单价" prop="productPrice"></el-table-column>
+          <el-table-column label="购买数量" prop="quantity"></el-table-column>
           <el-table-column label="记录时间" prop="timeStamp"></el-table-column>
           <template #empty>
             <el-empty description="没有数据"></el-empty>

@@ -1,7 +1,7 @@
 package com.project.service.impl;
 
-import com.project.mapper.SalesMapper;
 import com.project.mapper.BrowseLogMapper;
+import com.project.mapper.SalesMapper;
 import com.project.pojo.BrowseLog;
 import com.project.service.BrowseLogService;
 import org.springframework.beans.factory.annotation.Autowired;

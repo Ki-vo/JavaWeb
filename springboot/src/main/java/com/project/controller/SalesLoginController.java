@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.anno.Log;
+import com.project.anno.MyLog;
 import com.project.pojo.Result;
 import com.project.pojo.Salesman;
 import com.project.service.SalesService;
@@ -19,7 +19,7 @@ public class SalesLoginController {
     @Autowired
     private SalesService salesService;
 
-    @Log
+    @MyLog
     @PostMapping("/sales/login")
     public Result salesLogin(@RequestBody Salesman salesman) {
 
@@ -40,7 +40,7 @@ public class SalesLoginController {
         return Result.error("ID或密码错误");
     }
 
-    @Log
+    @MyLog
     @GetMapping("/sales/exit")
     public void exit() {
     }

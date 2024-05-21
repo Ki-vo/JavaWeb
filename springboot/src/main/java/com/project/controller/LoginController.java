@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.anno.Log;
+import com.project.anno.MyLog;
 import com.project.pojo.Result;
 import com.project.pojo.User;
 import com.project.service.UserService;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 @Slf4j
 @CrossOrigin
@@ -26,7 +25,7 @@ public class LoginController {
         return Result.success();
     }
 
-    @Log
+    @MyLog
     @PostMapping("/user/login")
     public Result userLogin(@RequestBody User user) {
         log.info("用户登录：{}", user);
@@ -45,7 +44,7 @@ public class LoginController {
         return Result.error("用户名或密码错误");
     }
 
-    @Log
+    @MyLog
     @GetMapping("/user/exit")
     public void exit() {
 

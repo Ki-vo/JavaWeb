@@ -84,9 +84,9 @@ const sendOrder = async function () {
         const userId = userStore.username
         const productId = selected[index].id
         const productPrice = selected[index].price
-        const purchaseNum = selected[index].num
+        const quantity = selected[index].num
         requestData.push({
-          userId, productId, productPrice, purchaseNum
+          userId, productId, productPrice, quantity
         })
       }
       console.log(requestData)

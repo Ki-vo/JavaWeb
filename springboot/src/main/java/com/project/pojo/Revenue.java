@@ -1,19 +1,17 @@
 package com.project.pojo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
-    private Integer id;
-    private String userId;
+public class Revenue {
     private Integer productId;
-    private Integer productPrice;
+    @JsonProperty("cate_id")
+    private Integer cateId;
     private Integer quantity;
-    private LocalDateTime timeStamp;
+    private Integer totalPrice;
 }

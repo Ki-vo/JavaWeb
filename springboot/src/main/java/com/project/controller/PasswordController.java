@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.anno.Log;
+import com.project.anno.MyLog;
 import com.project.pojo.Admin;
 import com.project.pojo.Result;
 import com.project.pojo.Salesman;
@@ -23,9 +23,9 @@ public class PasswordController {
     @Autowired
     private SalesService salesService;
 
-    private final String defaultSalesPassword = "1234";
+    private static final String DEFAULT_SALESMAN_PASSWORD = "1234";
 
-    @Log
+    @MyLog
     @PostMapping("/password/edit")
     public Result editPassword(@RequestParam("id") String username,
                                @RequestParam("tag") String tag,
@@ -86,7 +86,7 @@ public class PasswordController {
     @GetMapping("/password/reset/sales")
     public Result resetSalesPassword(@RequestParam("id") Integer id) {
         Salesman res = salesService.getById(id);
-        res.setPassword(defaultSalesPassword);
+        res.setPassword(DEFAULT_SALESMAN_PASSWORD);
         try {
             salesService.updateSales(res);
             return Result.success();

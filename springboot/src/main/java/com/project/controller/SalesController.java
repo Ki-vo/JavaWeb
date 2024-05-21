@@ -1,16 +1,17 @@
 package com.project.controller;
 
-
-import com.project.anno.Log;
+import com.project.anno.MyLog;
 import com.project.pojo.Result;
 import com.project.pojo.Salesman;
 import com.project.service.SalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
 
 @Slf4j
 @CrossOrigin
@@ -19,7 +20,7 @@ public class SalesController {
     @Autowired
     private SalesService salesService;
 
-    @Log
+    @MyLog
     @GetMapping("/sales/add")
     public Result addSalesman(@RequestParam("type") Integer type) {
         Salesman salesman = new Salesman("1234", type);
@@ -65,7 +66,7 @@ public class SalesController {
         }
     }
 
-    @Log
+    @MyLog
     @GetMapping("/sales/del")
     public Result delSalesmanById(@RequestParam("id") String name) {
         try {

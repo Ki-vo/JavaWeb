@@ -52,7 +52,7 @@ public class OrderController {
                 String productName = productService.getProductById(order.getProductId()).getName();
                 order.setTimeStamp(timeStamp);
                 orderService.addOrder(order);
-                content.append(String.format("%s 数量:%d\n", productName, order.getPurchaseNum()));
+                content.append(String.format("%s 数量:%d\n", productName, order.getQuantity()));
             }
             emailService.sendEmail(email, "订单信息", content.toString());
             return Result.success();
@@ -80,18 +80,6 @@ public class OrderController {
             return Result.error(e.getMessage());
         }
     }
-
-//    @GetMapping("/order/list")
-//    public Result getOrdersBySale(@RequestParam("username") String username) {
-//        Integer id = Integer.parseInt(username);
-//        try {
-//            Integer cateId = salesService.getById(id).getType();
-//            List<Order> list = orderService.getOrderByCateId(cateId);
-//            return Result.success(list);
-//        } catch (Exception e) {
-//            return Result.error(e.getMessage());
-//        }
-//    }
 
     @GetMapping("/order/list")
     public Result getOrdersByCateId(@RequestParam("cateId") Integer cateId) {

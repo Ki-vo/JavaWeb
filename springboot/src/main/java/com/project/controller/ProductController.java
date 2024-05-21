@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.anno.Log;
+import com.project.anno.MyLog;
 import com.project.pojo.Product;
 import com.project.pojo.Result;
 import com.project.service.FileService;
@@ -26,7 +26,7 @@ public class ProductController {
     @Autowired
     private FileService fileService;
 
-    @Log
+    @MyLog
     @PostMapping("/product/add")
     public Result addProduct(@RequestParam("name") String name,
                              @RequestParam("cate_id") Integer cateId,
@@ -48,7 +48,7 @@ public class ProductController {
         }
     }
 
-    @Log
+    @MyLog
     @PostMapping("/product/update")
     public Result editProduct(@RequestParam("id") Integer id,
                               @RequestParam("name") String name,
@@ -135,7 +135,7 @@ public class ProductController {
         }
     }
 
-    @Log
+    @MyLog
     @GetMapping("/product/del")
     public Result delProductById(@RequestParam("id") Integer id) {
         try {
@@ -149,4 +149,6 @@ public class ProductController {
             return Result.error("删除失败:" + e.getMessage());
         }
     }
+
+
 }

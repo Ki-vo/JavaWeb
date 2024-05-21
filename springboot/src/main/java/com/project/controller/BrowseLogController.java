@@ -1,7 +1,7 @@
 package com.project.controller;
 
-import com.project.pojo.Result;
 import com.project.pojo.BrowseLog;
+import com.project.pojo.Result;
 import com.project.service.BrowseLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

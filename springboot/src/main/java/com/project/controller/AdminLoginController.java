@@ -1,11 +1,9 @@
 package com.project.controller;
 
-import com.project.anno.Log;
+import com.project.anno.MyLog;
 import com.project.pojo.Admin;
 import com.project.pojo.Result;
-import com.project.pojo.Salesman;
 import com.project.service.AdminService;
-import com.project.service.SalesService;
 import com.project.utils.JWTUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,7 @@ public class AdminLoginController {
     @Autowired
     private AdminService adminService;
 
-    @Log
+    @MyLog
     @PostMapping("/admin/login")
     public Result adminLogin(@RequestBody Admin admin) {
 
@@ -41,7 +39,7 @@ public class AdminLoginController {
         return Result.error("ID或密码错误");
     }
 
-    @Log
+    @MyLog
     @GetMapping("/admin/exit")
     public void exit() {
     }

@@ -12,4 +12,5 @@ public interface OrderService {
     List<Order> getAllOrders();
 
     List<Order> getOrderByCateId(Integer cateId);
+
 }

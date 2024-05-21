@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.anno.Log;
+import com.project.anno.MyLog;
 import com.project.pojo.OperateLog;
 import com.project.pojo.Result;
 import com.project.service.OperateLogService;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -31,7 +32,7 @@ public class OperateLogController {
 
     }
 
-    @Log
+    @MyLog
     @GetMapping("/log/operate/delete")
     public Result deleteOperateLog(@RequestParam("id") Integer id) {
         try {

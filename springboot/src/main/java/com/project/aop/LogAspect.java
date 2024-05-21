@@ -26,7 +26,7 @@ public class LogAspect {
     @Autowired
     private HttpServletRequest request;
 
-    @AfterReturning(value = "@annotation(com.project.anno.Log)", returning = "res")
+    @AfterReturning(value = "@annotation(com.project.anno.MyLog)", returning = "res")
     public void recordLog(JoinPoint joinPoint, Object res) throws Throwable {
 
         OperateLog result = new OperateLog();
