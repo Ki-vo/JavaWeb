@@ -30,33 +30,33 @@ vue-project					根目录
 
 ​	|--- src					源代码
 
-​		|--- api				数据交互模块
+​              |--- api				数据交互模块
 
-​			|--- product.js	商品数据交互
+​	|---|---|--- product.js	商品数据交互
 
-​			|--- user.js		顾客数据交互
+​	|---|---|--- user.js		顾客数据交互
 
-​			|--- sales.js		销售人员数据交互
+​	|---|---|--- sales.js		销售人员数据交互
 
-​			|--- admin.js		管理员数据交互
+​	|---|---|--- admin.js		管理员数据交互
 
-​			|--- order.js		订单数据交互
+​	|---|---|--- order.js		订单数据交互
 
-​			|--- password.js	密码数据交互
+​	|---|---|--- password.js	密码数据交互
 
-​			|--- log.js			日志数据交互
+​	|---|---|--- log.js			日志数据交互
 
 ​		|--- assets			静态资源
 
-​		|--- router			路由模块
+​		|---|--- router			路由模块
 
-​		|--- stores			数据共享模块
+​		|---|--- stores			数据共享模块
 
-​			|--- index.js		统一管理
+​			|---|--- index.js		统一管理
 
-​			|--- user.js		用户信息暂存
+​			|---|--- user.js		用户信息暂存
 
-​			|--- shopcart.js	购物车信息暂存
+​			|---|--- shopcart.js	购物车信息暂存
 
 ​		|--- utils				工具模块
 
